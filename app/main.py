@@ -25,7 +25,10 @@ def main():
     # respons with body /echo/{str} which must return a 200 OK response
     # Content-Type and Content-Length are required 
 
-    if method == b"GET" and path.startswith(b"/echo/"):
+    if method == b"GET" and path == b"/":
+        response = response_ok 
+        connection.sendall(response)   
+    elif method == b"GET" and path.startswith(b"/echo/"):
         string = path.split(b'/')[2]
         response = b"HTTP/1.1 200 OK\r\n" +  b"Content-Type: text/plain\r\n" + b"Content-Length: " + str(len(string)).encode() + b"\r\n\r\n" + string
 
