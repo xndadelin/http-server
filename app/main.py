@@ -4,6 +4,7 @@ import sys
 from app.echo.main import echo
 from app.user_agent.main import user_agent
 from app.file.main import file
+from app.make_file.main import make_file
 
 # handle a single client connection
 
@@ -27,6 +28,8 @@ def handle_client(connection, directory):
         user_agent(request, connection, response_not_found)
     elif method == b"GET" and path.startswith(b"/files"):
         file(request, connection, response_not_found, path, directory)
+    elif method == b"POST" and path.startswith(b"/files"):
+        make_file(request, connection, response_not_found, path, directory)
     else:
         connection.sendall(response_not_found)
     connection.close()
