@@ -1,5 +1,6 @@
 import socket  # noqa: F401
-
+from app.echo.main import echo
+from app.user_agent.main import user_agent
 
 def main():
     server_socket = socket.create_server(("localhost", 4221), reuse_port=True)
@@ -25,20 +26,16 @@ def main():
     # respons with body /echo/{str} which must return a 200 OK response
     # Content-Type and Content-Length are required 
 
-    """ if method == b"GET" and path == b"/":
+    if method == b"GET" and path == b"/":
         response = response_ok 
-        connection.sendall(response)   
+        connection.sendall(response) 
     elif method == b"GET" and path.startswith(b"/echo/"):
-        string = path.split(b'/')[2]
-        response = b"HTTP/1.1 200 OK\r\n" +  b"Content-Type: text/plain\r\n" + b"Content-Length: " + str(len(string)).encode() + b"\r\n\r\n" + string
-
-        connection.sendall(response)
+        echo(method, response_not_found, connection, path)
+    elif method == b"GET" and path == b"/user-agent":
+        user_agent(request, connection, response_not_found)
     else:
-        response = response_not_found
-        connection.sendall(response)
-    """
-
-
+        connection.sendall(response_not_found)
+        
 
 
 if __name__ == "__main__":
