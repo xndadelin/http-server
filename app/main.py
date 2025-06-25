@@ -27,7 +27,7 @@ def main():
 
     if method == b"GET" and path.startswith(b"/echo/"):
         string = path.split(b'/')[2]
-        response = "HTTP/1.1 200 OK\r\n" +  b"Content-Type: text/plain\r\n" + b"Content-Length: " + str(len(string)).encode() + b"\r\n\r\n" + string
+        response = b"HTTP/1.1 200 OK\r\n" +  b"Content-Type: text/plain\r\n" + b"Content-Length: " + str(len(string)).encode() + b"\r\n\r\n" + string
 
         print(response)
 
