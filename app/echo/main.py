@@ -1,6 +1,8 @@
+import gzip
+
+
 def echo(method, response_not_found, connection, path, request):
     string = path.split(b'/')[2]
-    
     headers = request.split(b"\r\n")[1:-2]
     accept_encoding = None
     for header in headers:
@@ -8,7 +10,11 @@ def echo(method, response_not_found, connection, path, request):
             accept_encoding = header.split(b":", 1)[1].strip()
             break
     response = b"HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\n"
-    if accept_encoding and b"gzip" in accept_encoding:
-        response += b"Content-Encoding: gzip\r\n"
-    response += b"Content-Length: " + str(len(string)).encode() + b"\r\n\r\n" + string
+    body = string
+    if accept_encoding:
+        encodings = [e.strip() for e in accept_encoding.split(b",")]
+        if b"gzip" in encodings:
+            response += b"Content-Encoding: gzip\r\n"
+            body = gzip.compress(string)
+    response += b"Content-Length: " + str(len(body)).encode() + b"\r\n\r\n" + body
     connection.sendall(response)
