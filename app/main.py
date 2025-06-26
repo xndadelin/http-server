@@ -23,7 +23,7 @@ def handle_client(connection, directory):
     if method == b"GET" and path == b"/":
         connection.sendall(response_ok)
     elif method == b"GET" and path.startswith(b"/echo/"):
-        echo(method, response_not_found, connection, path)
+        echo(method, response_not_found, connection, path, request)
     elif method == b"GET" and path == b"/user-agent":
         user_agent(request, connection, response_not_found)
     elif method == b"GET" and path.startswith(b"/files"):
